@@ -1,7 +1,7 @@
 import Home from "./Home";
-import CreatePost from "./CreatePost";
+import BlendPost from "./BlendPost";
 
 export {
     Home,
-    CreatePost,
+    BlendPost,
 }

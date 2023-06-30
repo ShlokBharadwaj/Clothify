@@ -1,4 +1,8 @@
-import React from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+
+import { Home, BlendPost } from './pages';
+import logo from './assets';
 
 const App = () => {
   return (
