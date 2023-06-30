@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Loader, Card, FormField } from '../components';
 
 const Home = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!false);
   const [allPosts, setAllPosts] = useState([null]);
 
   return (
@@ -14,6 +14,21 @@ const Home = () => {
         <p className='mt-2 text-[#6c757d] text-[16px] max-w-[500px]'>
           Discover your perfect fit with AI-powered virtual try-on.
         </p>
+      </div>
+
+      <div className='mt-16'>
+        <FormField />
+      </div>
+
+      <div className='mt-10'>
+        {loading ? (
+          <div className='flex justify-center items-center'>
+            <Loader />
+          </div>
+        ) : (
+          <>
+          </>
+        )}
       </div>
     </section>
   )
