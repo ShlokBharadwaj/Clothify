@@ -18,7 +18,10 @@ const BlendPost = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
-  const handleSuggestMe = () => { }
+  const handleSuggestMe = () => {
+    const randomPrompt = getRandomPrompts();
+    setForm({ ...form, prompt: randomPrompt });
+  }
   const generateImage = () => { }
 
   return (
