@@ -14,9 +14,9 @@ const BlendPost = () => {
   });
   const [generatingImg, setgeneratingImg] = useState(false);
   const [loading, setloading] = useState(false);
-  const handleSubmit = () => {}
-  const handleChange = (e) => {}
-  const handleSuggestMe = () => {}
+  const handleSubmit = () => { }
+  const handleChange = (e) => { }
+  const handleSuggestMe = () => { }
 
   return (
     <section className='max-w-7xl mx-auto'>
@@ -39,7 +39,7 @@ const BlendPost = () => {
             handleChange={handleChange}
           ></FormField>
           <FormField
-            LabelName='prompt'
+            LabelName='Prompt'
             type='text'
             name='prompt'
             placeholder='a man trying on a casual outfit for a casual gathering'
@@ -48,6 +48,19 @@ const BlendPost = () => {
             isSuggestMe
             handleSuggestMe={handleSuggestMe}
           ></FormField>
+          <div className='relative bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg w-64 p-3 h-64 flex justify-center items-center'>
+            {form.photo ? (
+              <img src={form.photo} alt={form.photo} className='w-full h-full object-contain' />
+            ) : (
+              <img src={preview} alt='preview' className='w-9/12 h-3/4 object-contain opacity-40' />
+            )}
+            {generatingImg && (
+              <div className='absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center rounded-lg'>
+                <Loader />
+              </div>
+            )}
+
+          </div>
         </div>
       </form>
     </section>
