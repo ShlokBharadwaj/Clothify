@@ -1,8 +1,20 @@
 import React from 'react'
 
-const FormField = () => {
+const FormField = ({ LabelName, type, name, placeholder, value, handleChange, isSuggestMe, handleSuggestMe }) => {
   return (
-    <div>FormField</div>
+    <div>
+      <div className='flex items-center gap-2 mb-2'>
+        <label htmlFor={name} className='block text-sm font-medium text-gray-900'>
+          {LabelName}
+        </label>
+        {isSuggestMe && (
+          <button
+            type='button'
+            onClick={handleSuggestMe}
+            className='font-semibold text-xs bg-slate-300 py-1 px-2 rounded-md text-black hover:animate-pulse'>Suggest Me</button>
+        )}
+      </div>
+    </div>
   )
 }
 
