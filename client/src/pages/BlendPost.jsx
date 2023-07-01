@@ -25,7 +25,7 @@ const BlendPost = () => {
           Blend
         </h1>
         <p className='mt-2 text-[#6c757d] text-[16px] max-w-[500px]'>
-          Elevate your style with DALL-E & MidJourney's AI-powered virtual try-on for the perfect fit
+          Elevate your style with DALL-E & MidJourney's AI-powered virtual try-on for the perfect fit.
         </p>
       </div>
       <form className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
