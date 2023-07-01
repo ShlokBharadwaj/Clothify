@@ -17,6 +17,7 @@ const BlendPost = () => {
   const handleSubmit = () => { }
   const handleChange = (e) => { }
   const handleSuggestMe = () => { }
+  const generateImage = () => { }
 
   return (
     <section className='max-w-7xl mx-auto'>
@@ -28,7 +29,7 @@ const BlendPost = () => {
           Elevate your style with DALL-E & MidJourney's AI-powered virtual try-on for the perfect fit.
         </p>
       </div>
-      <form className='mt-16 max-w-6xlxl' onSubmit={handleSubmit}>
+      <form className='mt-16' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
           <FormField
             LabelName='Your Name'
@@ -61,6 +62,11 @@ const BlendPost = () => {
             )}
 
           </div>
+        </div>
+        <div className='mt-5 flex gap-5'>
+          <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
+            {generatingImg ? 'Generating Image...' : 'Generate Image'}
+          </button>
         </div>
       </form>
     </section>
