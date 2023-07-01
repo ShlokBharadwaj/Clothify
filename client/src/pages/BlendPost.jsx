@@ -28,7 +28,7 @@ const BlendPost = () => {
           Elevate your style with DALL-E & MidJourney's AI-powered virtual try-on for the perfect fit.
         </p>
       </div>
-      <form className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
+      <form className='mt-16 max-w-6xlxl' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
           <FormField
             LabelName='Your Name'
@@ -48,7 +48,7 @@ const BlendPost = () => {
             isSuggestMe
             handleSuggestMe={handleSuggestMe}
           ></FormField>
-          <div className='relative bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg w-64 p-3 h-64 flex justify-center items-center'>
+          <div className='relative bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg w-64 p-3 h-64 flex justify-center items-center mx-auto'>
             {form.photo ? (
               <img src={form.photo} alt={form.photo} className='w-full h-full object-contain' />
             ) : (
