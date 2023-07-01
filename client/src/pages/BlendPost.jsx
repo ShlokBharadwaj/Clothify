@@ -15,7 +15,9 @@ const BlendPost = () => {
   const [generatingImg, setgeneratingImg] = useState(false);
   const [loading, setloading] = useState(false);
   const handleSubmit = () => { }
-  const handleChange = (e) => { }
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
   const handleSuggestMe = () => { }
   const generateImage = () => { }
 
@@ -65,7 +67,13 @@ const BlendPost = () => {
         </div>
         <div className='mt-5 flex gap-5'>
           <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
+            {generatingImg ? 'Wait...' : 'Choose Image'}
+          </button>
+          <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
             {generatingImg ? 'Generating Image...' : 'Generate Image'}
+          </button>
+          <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
+            {generatingImg ? 'Wait...' : 'Choose Mask'}
           </button>
         </div>
       </form>
