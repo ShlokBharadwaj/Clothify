@@ -40,7 +40,7 @@ const BlendPost = () => {
             LabelName='Your Name'
             type='text'
             name='name'
-            placeholder='Lorem Ipsum'
+            placeholder='John Doe'
             value={form.name}
             handleChange={handleChange}
           ></FormField>
@@ -48,7 +48,7 @@ const BlendPost = () => {
             LabelName='Prompt'
             type='text'
             name='prompt'
-            placeholder='a man trying on a casual outfit for a casual gathering'
+            placeholder='Me in a red dress'
             value={form.prompt}
             handleChange={handleChange}
             isSuggestMe
