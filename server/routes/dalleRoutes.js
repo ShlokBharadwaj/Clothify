@@ -14,11 +14,13 @@ const openai = new OpenAIApi(configuration);
 router.route('/').post(async (req, res) => {
     try {
         const { prompt } = req.body;
+        const { img } = req.body;
+        const { mask } = req.body;
 
         const aiResponse = await openai.createImageEdit({
-            image: FileSystem.createReadStream("img.png"),
+            image: FileSystem.createReadStream({ img }),
             prompt: { prompt },
-            mask: FileSystem.createReadStream("mask.png"),
+            mask: FileSystem.createReadStream({ mask }),
             n: 1,
             size: "1024x1024",
             responseFormat: "b64_json",
