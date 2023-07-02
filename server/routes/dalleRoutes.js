@@ -16,9 +16,9 @@ router.route('/').post(async (req, res) => {
         const { prompt } = req.body;
 
         const aiResponse = await openai.createImageEdit({
-            image: "",
+            image: FileSystem.createReadStream("img.png"),
             prompt: { prompt },
-            mask: "",
+            mask: FileSystem.createReadStream("mask.png"),
             n: 1,
             size: "1024x1024",
             responseFormat: "b64_json",
