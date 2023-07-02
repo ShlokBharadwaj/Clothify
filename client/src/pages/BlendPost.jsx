@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { preview } from '../assets';
@@ -12,8 +12,12 @@ const BlendPost = () => {
     prompt: '',
     photo: '',
   });
-  const [generatingImg, setgeneratingImg] = useState(false);
-  const [loading, setloading] = useState(false);
+  const [generatingImg, setGeneratingImg] = useState(false);
+
+  const [chosenImage, setChosenImage] = useState(null);
+  const [chosenMask, setChosenMask] = useState(null);
+
+  const [loading, setLoading] = useState(false);
   const handleSubmit = () => { }
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,7 +29,7 @@ const BlendPost = () => {
   const generateImage = async () => {
     if (form.prompt) {
       try {
-        setgeneratingImg(true);
+        setGeneratingImg(true);
         const response = await fetch('http://localhost:8080/api/v1/dalle', {
           method: 'POST',
           headers: {
@@ -39,45 +43,60 @@ const BlendPost = () => {
     }
   }
 
-  const validateImage = (file) => {
-    const maxSize = 1024 * 1024 * 4;
-    const maxWidth = 1024;
-    const maxHeight = 1024;
+  const validateImage = (file, isMask = false) => {
+    const maxSize = 4 * 1024 * 1024; // 4MB
 
     if (file.type !== 'image/png') {
-      // Handle invalid file type
-      alert('Invalid file type. Only PNG files are allowed.');
+      alert("Invalid file type. Only PNG files are allowed.");
       return false;
     }
-
     if (file.size > maxSize) {
-      // Handle file size exceeding the limit
-      alert('File size exceeds the limit. Please choose a smaller file.');
+      alert("File is too large. Only files up to 4MB are allowed.");
       return false;
     }
+    if (isMask && chosenImage) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = URL.createObjectURL(chosenImage);
 
-    const image = new Image();
-    image.src = URL.createObjectURL(file);
+        image.onload = () => {
+          URL.revokeObjectURL(image.src);
 
-    return new Promise((resolve, reject) => {
-      image.onload = () => {
-        if (image.width !== maxWidth || image.height !== maxHeight) {
-          // Handle invalid dimensions
-          alert('Invalid dimensions. Please choose an image with dimensions 1024x1024.');
-          reject();
-        } else {
-          resolve();
-        }
-        URL.revokeObjectURL(image.src);
-      };
+          const maskImage = new Image();
+          maskImage.src = URL.createObjectURL(file);
 
-      image.onerror = () => {
-        // Handle image loading error
-        alert('Error loading the image.');
-        reject();
-      };
-    });
+          maskImage.onload = () => {
+            URL.revokeObjectURL(maskImage.src);
+
+            if (
+              image.width !== maskImage.width ||
+              image.height !== maskImage.height
+            ) {
+              reject(
+                new Error(
+                  "Invalid mask dimensions. Mask should have the same dimensions as the image."
+                )
+              );
+            } else {
+              resolve();
+            }
+          };
+
+          maskImage.onerror = () => {
+            URL.revokeObjectURL(maskImage.src);
+            reject(new Error("Error loading the mask image."));
+          };
+        };
+
+        image.onerror = () => {
+          URL.revokeObjectURL(image.src);
+          reject(new Error("Error loading the image."));
+        };
+      });
+    }
+    return true;
   };
+
 
 
   const chooseImage = () => {
@@ -87,12 +106,16 @@ const BlendPost = () => {
     input.onchange = (e) => {
       const file = e.target.files[0];
       if (file) {
-        const { width, height, size } = file;
-        console.log('Chosen image:', file);
+        if (validateImage(file)) {
+          setChosenImage(file);
+          // TODO: API call 
+          console.log('Chosen image:', file);
+        }
       }
     };
     input.click();
-  }
+  };
+
   const chooseMask = () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -100,12 +123,28 @@ const BlendPost = () => {
     input.onchange = (event) => {
       const file = event.target.files[0];
       if (file) {
-        const { width, height, size } = file;
-        console.log('Chosen mask:', file);
+        if (validateImage(file, true)) {
+          setChosenMask(file);
+          // TODO: API call
+          console.log('Chosen mask:', file);
+        }
       }
     };
     input.click();
   }
+
+  useEffect(() => {
+    if (chosenImage && chosenMask) {
+      validateImage(chosenMask, true)
+        .then(() => {
+          console.log('Mask is valid');
+        })
+        .catch((error) => {
+          alert(error.message);
+          setChosenMask(null);
+        });
+    }
+  }, [chosenImage, chosenMask]);
 
   return (
     <section className='max-w-7xl mx-auto'>
