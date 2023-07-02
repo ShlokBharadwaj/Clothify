@@ -38,6 +38,48 @@ const BlendPost = () => {
       }
     }
   }
+
+  const validateImage = (file) => {
+    const maxSize = 1024 * 1024 * 4;
+    const maxWidth = 1024;
+    const maxHeight = 1024;
+
+    if (file.type !== 'image/png') {
+      // Handle invalid file type
+      alert('Invalid file type. Only PNG files are allowed.');
+      return false;
+    }
+
+    if (file.size > maxSize) {
+      // Handle file size exceeding the limit
+      alert('File size exceeds the limit. Please choose a smaller file.');
+      return false;
+    }
+
+    const image = new Image();
+    image.src = URL.createObjectURL(file);
+
+    return new Promise((resolve, reject) => {
+      image.onload = () => {
+        if (image.width !== maxWidth || image.height !== maxHeight) {
+          // Handle invalid dimensions
+          alert('Invalid dimensions. Please choose an image with dimensions 1024x1024.');
+          reject();
+        } else {
+          resolve();
+        }
+        URL.revokeObjectURL(image.src);
+      };
+
+      image.onerror = () => {
+        // Handle image loading error
+        alert('Error loading the image.');
+        reject();
+      };
+    });
+  };
+
+
   const chooseImage = () => {
     const input = document.createElement('input');
     input.type = 'file';
