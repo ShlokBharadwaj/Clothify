@@ -38,6 +38,32 @@ const BlendPost = () => {
       }
     }
   }
+  const chooseImage = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/png';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const { width, height, size } = file;
+        console.log('Chosen image:', file);
+      }
+    };
+    input.click();
+  }
+  const chooseMask = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/png';
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const { width, height, size } = file;
+        console.log('Chosen mask:', file);
+      }
+    };
+    input.click();
+  }
 
   return (
     <section className='max-w-7xl mx-auto'>
@@ -84,13 +110,13 @@ const BlendPost = () => {
           </div>
         </div>
         <div className='mt-5 flex gap-5'>
-          <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
+          <button type='button' onClick={chooseImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
             {generatingImg ? 'Wait...' : 'Choose Image'}
           </button>
           <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
             {generatingImg ? 'Generating Image...' : 'Generate Image'}
           </button>
-          <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
+          <button type='button' onClick={chooseMask} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-1/2 px-5 py-3 mx-auto'>
             {generatingImg ? 'Wait...' : 'Choose Mask'}
           </button>
         </div>
