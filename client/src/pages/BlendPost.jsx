@@ -97,8 +97,6 @@ const BlendPost = () => {
     return true;
   };
 
-
-
   const chooseImage = () => {
     const input = document.createElement('input');
     input.type = 'file';
