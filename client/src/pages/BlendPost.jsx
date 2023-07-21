@@ -18,6 +18,7 @@ const BlendPost = () => {
   const [chosenMask, setChosenMask] = useState(null);
 
   const [loading, setLoading] = useState(false);
+  const [imageUrls, setImageUrls] = useState([]);
   const handleSubmit = () => { }
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,18 +28,37 @@ const BlendPost = () => {
     setForm({ ...form, prompt: randomPrompt });
   }
   const generateImage = async () => {
-    if (form.prompt) {
+    if (!form.prompt) {
+      alert("Please enter a prompt.");
+    } else if (!chosenImage) {
+      alert("Please choose an image.");
+    } else if (!chosenMask) {
+      alert("Please choose a mask.");
+    } else {
       try {
         setGeneratingImg(true);
+        setLoading(true);
+
+        const formData = new FormData();
+        formData.append('prompt', form.prompt);
+        formData.append('image', chosenImage);
+        formData.append('mask', chosenMask);
+
         const response = await fetch('http://localhost:8080/api/v1/dalle', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ prompt: form.prompt })
-        })
-      } catch (error) {
+          body: formData,
+        });
 
+        const data = await response.json();
+        setImageUrls(data.urls);
+
+        setLoading(false);
+        setGeneratingImg(false);
+
+      } catch (error) {
+        setLoading(false);
+        setGeneratingImg(false);
+        alert('Error generating image');
       }
     }
   }
@@ -107,6 +127,11 @@ const BlendPost = () => {
         if (validateImage(file)) {
           setChosenImage(file);
           // TODO: API call 
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setForm({ ...form, photo: reader.result });
+          };
+          reader.readAsDataURL(file);
           console.log('Chosen image:', file);
         }
       }
