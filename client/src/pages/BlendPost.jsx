@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
 import { getRandomPrompts } from '../utils';
 import { FormField, Loader } from '../components';
+import Products from './Products';
+import TryOn from './TryOn';
 
 const BlendPost = () => {
   const navigate = useNavigate();
@@ -225,6 +227,7 @@ const BlendPost = () => {
           </button>
         </div>
       </form>
+      <Products />
     </section>
   )
 }
