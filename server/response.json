@@ -1,0 +1,31 @@
+{
+  "progress": 100,
+  "response": {
+    "createdAt": "2023-07-23T20:08:57.136Z",
+    "originatingMessageId": "<your-message-id>",
+    "ref": "",
+    "buttons": [
+      "U1",
+      "U2",
+      "U3",
+      "U4",
+      "🔄",
+      "V1",
+      "V2",
+      "V3",
+      "V4"
+    ],
+    "imageUrl": "your-image-url",
+    "imageUrls": [
+      "your-image-url-1",
+      "your-image-url-2",
+      "your-image-url-3",
+      "your-image-url-4"
+    ],
+    "responseAt": "2023-07-23T20:08:57.448Z",
+    "description": "",
+    "type": "blend",
+    "content": "<https://s.mj.run/eoL80_BFqhU> <https://s.mj.run/RzAt6SQ4ihI>",
+    "buttonMessageId": "<your-button-message-id>"
+  }
+}
