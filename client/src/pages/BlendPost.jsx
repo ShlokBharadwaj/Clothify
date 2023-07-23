@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
 import { Loader } from '../components';
 import Products from './Products';
+import TryOn from './TryOn';
 
 const BlendPost = () => {
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const BlendPost = () => {
         </div>
       </form>
       <Products />
+      <TryOn />
     </section>
   )
 };

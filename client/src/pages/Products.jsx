@@ -15,13 +15,22 @@ const Products = () => {
     ];
 
     return (
-        <div className="grid sm:grid-cols-3 grid-cols-2 gap-4 mt-8">
-            {products.map((product, index) => (
-                <div key={index} className="border border-gray-300 p-4 rounded-lg cursor-pointer">
-                    <img src={product.imageUrl} alt={product.description} className="w-full h-64 sm:object-contain  object-cover mb-2 rounded-lg" />
-                    <p className="text-gray-800 text-sm text-center font-semibold">{product.description}</p>
-                </div>
-            ))}
+        <div>
+            <h1 className='font-extrabold text-[#343a40] text-[32px] mt-10 mx-auto max-w-7xl'>
+                Products
+            </h1>
+            <p className='mt-4 text-[#6c757d] text-[16px] max-w-[500px]'>
+                Explore our diverse collection of stylish clothing products, offering a wide variety of options to suit your unique style and preferences.
+            </p>
+
+            <div className="grid sm:grid-cols-3 grid-cols-2 gap-4 mt-8">
+                {products.map((product, index) => (
+                    <div key={index} className="border border-gray-300 p-4 rounded-lg cursor-pointer">
+                        <img src={product.imageUrl} alt={product.description} className="w-full h-64 sm:object-contain  object-cover mb-2 rounded-lg" />
+                        <p className="text-gray-800 text-sm text-center font-semibold">{product.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
