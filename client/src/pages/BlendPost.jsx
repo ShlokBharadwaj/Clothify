@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { preview } from '../assets';
-import { FormField, Loader } from '../components';
+import { Loader } from '../components';
 import Products from './Products';
-import TryOn from './TryOn';
 
 const BlendPost = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    name: '',
-    photo: '',
-  });
   const [generatingImg, setGeneratingImg] = useState(false);
-
   const [chosenImage, setChosenImage] = useState(null);
-
   const [loading, setLoading] = useState(false);
-  const [imageUrls, setImageUrls] = useState([]);
 
-  const handleSubmit = () => { }
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  const handleSubmit = () => { };
 
   const generateImage = async () => {
     if (!chosenImage) {
@@ -35,24 +23,25 @@ const BlendPost = () => {
         const formData = new FormData();
         formData.append('image', chosenImage);
 
-        const response = await fetch('http://localhost:8080/api/v1/dalle', {
+        const response = await fetch('http://localhost:8000/upload', {
           method: 'POST',
           body: formData,
         });
 
+        // The server should return the image URL in the response
         const data = await response.json();
-        setImageUrls(data.urls);
+        setForm({ ...form, photo: data.imageUrl });
 
         setLoading(false);
         setGeneratingImg(false);
-
+        
       } catch (error) {
         setLoading(false);
         setGeneratingImg(false);
         alert('Error generating image');
       }
     }
-  }
+  };
 
   const validateImage = (file, isMask = false) => {
     const maxSize = 4 * 1024 * 1024; // 4MB
@@ -77,22 +66,12 @@ const BlendPost = () => {
       if (file) {
         if (validateImage(file)) {
           setChosenImage(file);
-          // TODO: API call 
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setForm({ ...form, photo: reader.result });
-          };
-          reader.readAsDataURL(file);
           console.log('Chosen image:', file);
         }
       }
     };
     input.click();
   };
-
-  useEffect(() => {
-    // TODO: Implement any necessary cleanup or effect dependencies
-  }, []);
 
   return (
     <section className='max-w-7xl mx-auto'>
@@ -107,8 +86,8 @@ const BlendPost = () => {
       <form className='mt-16' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
           <div className='relative bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg w-64 p-3 h-64 flex justify-center items-center mx-auto'>
-            {form.photo ? (
-              <img src={form.photo} alt={form.photo} className='w-full h-full object-contain' />
+            {chosenImage ? (
+              <img src={URL.createObjectURL(chosenImage)} alt='preview' className='w-full h-full object-contain' />
             ) : (
               <img src={preview} alt='preview' className='w-9/12 h-3/4 object-contain opacity-40' />
             )}
@@ -133,4 +112,4 @@ const BlendPost = () => {
   )
 }
 
-export default BlendPost
+export default BlendPost;
