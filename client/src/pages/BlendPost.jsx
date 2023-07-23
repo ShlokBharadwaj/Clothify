@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
 import { Loader } from '../components';
@@ -6,18 +6,23 @@ import Products from './Products';
 
 const BlendPost = () => {
   const navigate = useNavigate();
-  const [generatingImg, setGeneratingImg] = useState(false);
+  const [uploadingImg, setUploadingImg] = useState(false);
   const [chosenImage, setChosenImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [imageUrls, setImageUrls] = useState([]);
+
+  // New state variable for generated image URL
+  const [generatedImageUrl, setGeneratedImageUrl] = useState('');
 
   const handleSubmit = () => { };
 
   const generateImage = async () => {
     if (!chosenImage) {
-      alert("Please choose an image.");
+      alert('Please choose an image.');
+      return;
     } else {
       try {
-        setGeneratingImg(true);
+        setUploadingImg(true);
         setLoading(true);
 
         const formData = new FormData();
@@ -33,30 +38,29 @@ const BlendPost = () => {
         }
 
         const data = await response.json();
-        console.log('Image URL:', data.imageUrl);
+        const imageUrl = `http://localhost:8000/uploads/${data.fileName}`;
+        setGeneratedImageUrl(imageUrl); // Use the new state variable here
 
         setLoading(false);
-        setGeneratingImg(false);
-
+        setUploadingImg(false);
       } catch (error) {
         setLoading(false);
-        setGeneratingImg(false);
+        setUploadingImg(false);
         alert('Error generating image');
         console.error('Error details:', error);
       }
     }
   };
 
-
   const validateImage = (file, isMask = false) => {
     const maxSize = 4 * 1024 * 1024; // 4MB
 
     if (file.type !== 'image/png') {
-      alert("Invalid file type. Only PNG files are allowed.");
+      alert('Invalid file type. Only PNG files are allowed.');
       return false;
     }
     if (file.size > maxSize) {
-      alert("File is too large. Only files up to 4MB are allowed.");
+      alert('File is too large. Only files up to 4MB are allowed.');
       return false;
     }
     return true;
@@ -96,7 +100,7 @@ const BlendPost = () => {
             ) : (
               <img src={preview} alt='preview' className='w-9/12 h-3/4 object-contain opacity-40' />
             )}
-            {generatingImg && (
+            {uploadingImg && (
               <div className='absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center rounded-lg'>
                 <Loader />
               </div>
@@ -105,16 +109,16 @@ const BlendPost = () => {
         </div>
         <div className='mt-5 flex gap-5'>
           <button type='button' onClick={chooseImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-52 px-5 py-3 mx-auto'>
-            {generatingImg ? 'Wait...' : 'Choose Image'}
+            {uploadingImg ? 'Wait...' : 'Choose Image'}
           </button>
           <button type='button' onClick={generateImage} className='text-white bg-[#694faf] font-medium rounded-lg text-sm w-52  px-5 py-3 mx-auto'>
-            {generatingImg ? 'Generating Image...' : 'Generate Image'}
+            {uploadingImg ? 'Uploading Image...' : 'Upload Image'}
           </button>
         </div>
       </form>
       <Products />
     </section>
   )
-}
+};
 
 export default BlendPost;
