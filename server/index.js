@@ -18,6 +18,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.urlencoded({ extended: false }));
+app.use('/products', express.static(path.join(__dirname, 'products')));
+
 
 app.use(cors());
 
