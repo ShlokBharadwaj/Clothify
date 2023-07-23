@@ -28,20 +28,25 @@ const BlendPost = () => {
           body: formData,
         });
 
-        // The server should return the image URL in the response
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
-        setForm({ ...form, photo: data.imageUrl });
+        console.log('Image URL:', data.imageUrl);
 
         setLoading(false);
         setGeneratingImg(false);
-        
+
       } catch (error) {
         setLoading(false);
         setGeneratingImg(false);
         alert('Error generating image');
+        console.error('Error details:', error);
       }
     }
   };
+
 
   const validateImage = (file, isMask = false) => {
     const maxSize = 4 * 1024 * 1024; // 4MB
