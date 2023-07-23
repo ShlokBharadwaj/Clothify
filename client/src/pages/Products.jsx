@@ -3,15 +3,15 @@ import React from 'react';
 const Products = () => {
     // TODO: Fetch data from products array with image URLs and descriptions
     const products = [
-        { imageUrl: 'http://localhost:8000/products/img1.png', description: 'Yellow Winter Coat' },
+        { imageUrl: 'http://localhost:8000/products/img1.png', description: 'Blue Crop Top' },
         { imageUrl: 'http://localhost:8000/products/img2.png', description: 'Blue Denim Jeans' },
         { imageUrl: 'http://localhost:8000/products/img3.png', description: 'Gray Business Suit' },
-        { imageUrl: 'http://localhost:8000/products/img4.png', description: 'White Shirt' },
-        { imageUrl: 'http://localhost:8000/products/img5.png', description: 'Blue Crop Top' },
-        { imageUrl: 'http://localhost:8000/products/img6.png', description: 'Green T-Shirt' },
-        { imageUrl: 'http://localhost:8000/products/img7.png', description: 'Red Skirt' },
-        { imageUrl: 'http://localhost:8000/products/img8.png', description: 'Red&White Checked Shirt' },
-        { imageUrl: 'http://localhost:8000/products/img9.png', description: 'White Tuxedo' },
+        { imageUrl: 'http://localhost:8000/products/img4.png', description: 'Green T-Shirt' },
+        { imageUrl: 'http://localhost:8000/products/img5.png', description: 'Red Skirt' },
+        { imageUrl: 'http://localhost:8000/products/img6.png', description: 'Red&White Checked Shirt' },
+        { imageUrl: 'http://localhost:8000/products/img7.png', description: 'White Tuxedo' },
+        { imageUrl: 'http://localhost:8000/products/img8.png', description: 'Yellow Winter Coat' },
+        { imageUrl: 'http://localhost:8000/products/img9.png', description: 'White Shirt' },
     ];
 
     return (
