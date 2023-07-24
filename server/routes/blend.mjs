@@ -74,21 +74,21 @@ async function readAndConvertImageFiles() {
         const currentDirectory = dirname(currentFilePath);
 
         
-        const modelImagePath = join(currentDirectory, "model.jpg");
-        const tshirtImagePath = join(currentDirectory, "tshirt.jpg");
+        const userImagePath = join(currentDirectory, "model.jpg");
+        const productImagePath = join(currentDirectory, "tshirt.jpg");
 
         
-        const modelImage = await readFile(modelImagePath, { encoding: "base64" });
-        const tshirtImage = await readFile(tshirtImagePath, { encoding: "base64" });
+        const userImage = await readFile(userImagePath, { encoding: "base64" });
+        const productImage = await readFile(productImagePath, { encoding: "base64" });
 
         
-        const imageUrls = [`data:image/jpeg;base64,${modelImage}`, `data:image/jpeg;base64,${tshirtImage}`];
+        const imageUrls = [`data:image/jpeg;base64,${userImage}`, `data:image/jpeg;base64,${productImage}`];
 
         const messageId = await blendImages(imageUrls);
         const messageResponse = await getMessage(messageId);
         console.log(JSON.stringify(messageResponse));
 
-        const jsonDirectory = dirname(modelImagePath);
+        const jsonDirectory = dirname(userImagePath);
         await saveJson(messageResponse, jsonDirectory);
 
     } catch (error) {
