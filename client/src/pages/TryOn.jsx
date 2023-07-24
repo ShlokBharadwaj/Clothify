@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import { Loader } from '../components';
 
 const TryOn = () => {
 
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -13,9 +15,11 @@ const TryOn = () => {
         if (response.data && response.data.response && response.data.response.imageUrls) {
           setResults(response.data.response.imageUrls);
         }
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching response.json:', error);
+        setLoading(false);
       });
   }, []);
 
@@ -28,13 +32,17 @@ const TryOn = () => {
         Step into the future of virtual fashion with our innovative 'TryOn' feature. Upload your picture, and watch as our cutting-edge technology seamlessly blends your image with our stunning product collection, giving you a realistic preview of how you'll look wearing your favorite clothing items.
       </p>
 
-      <div className="grid sm:grid-cols-3 grid-cols-2 gap-4 mt-8">
-        {results.map((imageUrl, index) => (
-          <div key={index} className="border border-gray-300 p-4 rounded-lg cursor-pointer">
-            <img src={imageUrl} alt={`Product ${index + 1}`} className="w-full h-64 sm:object-contain object-cover mb-2 rounded-lg" />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <Loader /> // Show the loader while data is being fetched
+      ) : (
+        <div className="grid sm:grid-cols-3 grid-cols-2 gap-4 mt-8">
+          {results.map((imageUrl, index) => (
+            <div key={index} className="border border-gray-300 p-4 rounded-lg cursor-pointer">
+              <img src={imageUrl} alt={`Product ${index + 1}`} className="w-full h-64 sm:object-contain object-cover mb-2 rounded-lg" />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
