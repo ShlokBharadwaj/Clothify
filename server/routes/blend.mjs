@@ -1,5 +1,7 @@
-const axios = require("axios");
-const fs = require("fs");
+import axios from "axios";
+import { readFile, writeFile } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 async function blendImages(urls) {
     try {
@@ -50,69 +52,48 @@ async function getMessage(messageId) {
     }
 }
 
-async function saveImages(messageResponse) {
+async function saveJson(messageResponse, directoryPath) {
     try {
         if (messageResponse && messageResponse.response && messageResponse.response.imageUrls) {
-            // Save the response JSON
-            fs.writeFileSync('response.json', JSON.stringify(messageResponse, null, 2));
+            const responseFilePath = join(directoryPath, "response.json");
+            await writeFile(responseFilePath, JSON.stringify(messageResponse, null, 2));
 
-            // Create a simple HTML page to display the images
-            let htmlContent = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>Blended Images</title>
-            </head>
-            <body>
-          `;
-
-            // Add image tags for each URL
-            const imageUrls = messageResponse.response.imageUrls;
-            for (let i = 0; i < imageUrls.length; i++) {
-                htmlContent += `<img src="${imageUrls[i]}" alt="Blended Image">\n`;
-            }
-
-            // Close the HTML page
-            htmlContent += `
-            </body>
-            </html>
-          `;
-
-            // Save the HTML content to a file
-            fs.writeFileSync("index.html", htmlContent);
-
-            console.log("Images saved successfully!");
+            console.log("\nJSON response saved successfully!");
         } else {
-            console.log("Invalid messageResponse. Missing required properties.");
+            console.log("\nInvalid messageResponse. Missing required properties.");
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-function readAndConvertImageFiles() {
+// Function to read image files and convert them to base64 URLs
+async function readAndConvertImageFiles() {
     try {
-        const modelImage = fs.readFileSync(__dirname + "\\model.jpg", { encoding: "base64" });
-        const tshirtImage = fs.readFileSync(__dirname + "\\tshirt.jpg", { encoding: "base64" });
+        const currentFilePath = fileURLToPath(import.meta.url);
+        const currentDirectory = dirname(currentFilePath);
 
-        // Use the base64 URLs in the blendImages function
+        
+        const modelImagePath = join(currentDirectory, "model.jpg");
+        const tshirtImagePath = join(currentDirectory, "tshirt.jpg");
+
+        
+        const modelImage = await readFile(modelImagePath, { encoding: "base64" });
+        const tshirtImage = await readFile(tshirtImagePath, { encoding: "base64" });
+
+        
         const imageUrls = [`data:image/jpeg;base64,${modelImage}`, `data:image/jpeg;base64,${tshirtImage}`];
 
-        blendImages(imageUrls)
-            .then(async function (messageId) {
-                const messageResponse = await getMessage(messageId);
-                console.log(JSON.stringify(messageResponse));
+        const messageId = await blendImages(imageUrls);
+        const messageResponse = await getMessage(messageId);
+        console.log(JSON.stringify(messageResponse));
 
-                // Save the images
-                await saveImages(messageResponse);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        const jsonDirectory = dirname(modelImagePath);
+        await saveJson(messageResponse, jsonDirectory);
+
     } catch (error) {
         console.log("Error reading image files:", error);
     }
 }
 
-// Call the function to read and convert image files
 readAndConvertImageFiles();

@@ -1,7 +1,7 @@
 {
   "progress": 100,
   "response": {
-    "createdAt": "2023-07-23T20:08:57.136Z",
+    "createdAt": "2023-07-24T08:31:39.169Z",
     "originatingMessageId": "<your-message-id>",
     "ref": "",
     "buttons": [
@@ -15,17 +15,17 @@
       "V3",
       "V4"
     ],
-    "imageUrl": "your-image-url",
+    "imageUrl": "<your-image-url>",
     "imageUrls": [
-      "your-image-url-1",
-      "your-image-url-2",
-      "your-image-url-3",
-      "your-image-url-4"
+      "<your-image-url-1>",
+      "<your-image-url-2>",
+      "<your-image-url-3>",
+      "<your-image-url-4>"
     ],
-    "responseAt": "2023-07-23T20:08:57.448Z",
+    "responseAt": "2023-07-24T08:31:39.408Z",
     "description": "",
     "type": "blend",
-    "content": "<https://s.mj.run/eoL80_BFqhU> <https://s.mj.run/RzAt6SQ4ihI>",
+    "content": "<https://s.mj.run/6QMZVfh8oe8> <https://s.mj.run/KrsqCcg8pFY>",
     "buttonMessageId": "<your-button-message-id>"
   }
 }
