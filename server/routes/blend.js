@@ -1,5 +1,5 @@
-import axios from "axios";
-import fs from "fs";
+const axios = require("axios");
+const fs = require("fs");
 
 async function blendImages(urls) {
     try {
@@ -13,7 +13,7 @@ async function blendImages(urls) {
             method: 'post',
             url: 'https://api.thenextleg.io/v2/blend',
             headers: {
-                'Authorization': 'Bearer <your-token>',
+                'Authorization': 'Bearer <token>',
                 'Content-Type': 'application/json'
             },
             data: blendData
@@ -33,7 +33,7 @@ async function getMessage(messageId) {
             method: 'get',
             url: `https://api.thenextleg.io/v2/message/${messageId}?expireMins=2`,
             headers: {
-                'Authorization': 'Bearer <your-token>',
+                'Authorization': 'Bearer <token>',
             }
         };
 
@@ -90,17 +90,29 @@ async function saveImages(messageResponse) {
     }
 }
 
-// Usage for testing:
-var imageUrls = ["https://images.unsplash.com/photo-1618354691438-25bc04584c23?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=415&q=80", "https://images.unsplash.com/photo-1623366302587-b38b1ddaefd9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=725&q=80"];
+function readAndConvertImageFiles() {
+    try {
+        const modelImage = fs.readFileSync(__dirname + "\\model.jpg", { encoding: "base64" });
+        const tshirtImage = fs.readFileSync(__dirname + "\\tshirt.jpg", { encoding: "base64" });
 
-blendImages(imageUrls)
-    .then(async function (messageId) {
-        const messageResponse = await getMessage(messageId);
-        console.log(JSON.stringify(messageResponse));
+        // Use the base64 URLs in the blendImages function
+        const imageUrls = [`data:image/jpeg;base64,${modelImage}`, `data:image/jpeg;base64,${tshirtImage}`];
 
-        // Save the images
-        await saveImages(messageResponse);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        blendImages(imageUrls)
+            .then(async function (messageId) {
+                const messageResponse = await getMessage(messageId);
+                console.log(JSON.stringify(messageResponse));
+
+                // Save the images
+                await saveImages(messageResponse);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    } catch (error) {
+        console.log("Error reading image files:", error);
+    }
+}
+
+// Call the function to read and convert image files
+readAndConvertImageFiles();
