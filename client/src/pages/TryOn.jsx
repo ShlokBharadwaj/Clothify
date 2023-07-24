@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
 
 const TryOn = () => {
-  // TODO: Fetch data from products array with image URLs and descriptions
-  const results = [
-    { imageUrl: 'http://localhost:8000/products/img1.png' },
-    { imageUrl: 'http://localhost:8000/products/img2.png' },
-    { imageUrl: 'http://localhost:8000/products/img3.png' },
-    { imageUrl: 'http://localhost:8000/products/img4.png' },
-    { imageUrl: 'http://localhost:8000/products/img5.png' },
-    { imageUrl: 'http://localhost:8000/products/img6.png' },
-    { imageUrl: 'http://localhost:8000/products/img7.png' },
-    { imageUrl: 'http://localhost:8000/products/img8.png' },
-    { imageUrl: 'http://localhost:8000/products/img9.png' },
-  ];
+
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    // Fetch the response.json data from the backend API
+    axios.get('http://localhost:8000/api/response')
+      .then((response) => {
+        // Update the state with the imageUrls data from response.json
+        if (response.data && response.data.response && response.data.response.imageUrls) {
+          setResults(response.data.response.imageUrls);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching response.json:', error);
+      });
+  }, []);
 
   return (
     <div>
@@ -24,9 +29,9 @@ const TryOn = () => {
       </p>
 
       <div className="grid sm:grid-cols-3 grid-cols-2 gap-4 mt-8">
-        {results.map((product, index) => (
+        {results.map((imageUrl, index) => (
           <div key={index} className="border border-gray-300 p-4 rounded-lg cursor-pointer">
-            <img src={product.imageUrl} alt={product.description} className="w-full h-64 sm:object-contain  object-cover mb-2 rounded-lg" />
+            <img src={imageUrl} alt={`Product ${index + 1}`} className="w-full h-64 sm:object-contain object-cover mb-2 rounded-lg" />
           </div>
         ))}
       </div>
