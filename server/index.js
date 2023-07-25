@@ -4,6 +4,8 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
+let readAndConvertImageFiles = require('./routes/blend.js').readAndConvertImageFiles;
+
 const app = express();
 const PORT = 8000;
 
@@ -16,7 +18,7 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/products', express.static(path.join(__dirname, 'products')));
@@ -27,7 +29,7 @@ app.get("/", (req, res) => {
     res.send("<h1>Express Server</h1>");
 });
 
-const directoryPath = path.join(__dirname, '\\routes\\');
+const directoryPath = path.join(__dirname, 'routes');
 
 app.get('/api/response', (req, res) => {
     // Read the response.json file and send it as the response
@@ -46,5 +48,19 @@ app.post("/upload", upload.single("image"), (req, res) => {
     // Respond with the image URL
     res.json({ imageUrl });
 });
+
+app.post('/api/process-images', upload.single('userImage'), async (req, res) => {
+    try {
+        const userImage = req.file.filename;
+        const productImage = req.body.productImage;
+
+        await readAndConvertImageFiles(userImage, productImage);
+
+        res.json({ message: "Image processing and response.json creation successful." });
+    } catch (error) {
+        console.error("Error processing images:", error);
+        res.status(500).json({ error: "Image processing failed." });
+    }
+})
 
 app.listen(PORT, () => console.log(`Server running on localhost:${PORT}`));
