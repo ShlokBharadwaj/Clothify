@@ -50,14 +50,14 @@ const BlendPost = () => {
 
 
   const validateImage = (file, isMask = false) => {
-    const maxSize = 4 * 1024 * 1024; // 4MB
-
+    const maxSize = 1 * 1024 * 1024; // 1MB
+    console.log("The user upload Image size is: " + file.size);
     if (file.type !== 'image/png') {
       alert('Invalid file type. Only PNG files are allowed.');
       return false;
     }
     if (file.size > maxSize) {
-      alert('File is too large. Only files up to 4MB are allowed.');
+      alert('File is too large. Only files up to 1MB are allowed.');
       return false;
     }
     return true;
