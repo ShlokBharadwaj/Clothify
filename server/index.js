@@ -56,11 +56,13 @@ app.post('/api/process-images', upload.single('userImage'), async (req, res) => 
 
         await readAndConvertImageFiles(userImage, productImage);
 
-        res.json({ message: "Image processing and response.json creation successful." });
+        console.log('The user Image is: ' + userImage + ' And the Product image is: ' + productImage);
+
+        res.json({ message: 'Image processing and response.json creation successful.' });
     } catch (error) {
-        console.error("Error processing images:", error);
-        res.status(500).json({ error: "Image processing failed." });
+        console.error('Error processing images:', error);
+        res.status(500).json({ error: 'Image processing failed.' });
     }
-})
+});
 
 app.listen(PORT, () => console.log(`Server running on localhost:${PORT}`));
