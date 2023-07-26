@@ -4,22 +4,20 @@ import { preview } from '../assets';
 import { Loader } from '../components';
 import Products from './Products';
 import TryOn from './TryOn';
+import axios from 'axios';
 
 const BlendPost = () => {
-  const navigate = useNavigate();
-  const [uploadingImg, setUploadingImg] = useState(false);
   const [chosenImage, setChosenImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [imageUrls, setImageUrls] = useState([]);
-
-  // New state variable for generated image URL
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [uploadingImg, setUploadingImg] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleSubmit = () => { };
+  const navigate = useNavigate();
 
   const generateImage = async () => {
-    if (!chosenImage) {
-      alert('Please choose an image.');
+    if (!chosenImage || !selectedProduct) {
+      alert('Please choose an image and a product.');
       return;
     } else {
       try {
@@ -27,20 +25,16 @@ const BlendPost = () => {
         setLoading(true);
 
         const formData = new FormData();
-        formData.append('image', chosenImage);
+        formData.append('userImage', chosenImage);
+        formData.append('productImage', selectedProduct.imageUrl);
 
-        const response = await fetch('http://localhost:8000/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        // Send the form data to the backend API
+        await axios.post('http://localhost:8000/api/process-images', formData);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
+        // After processing on the backend, set the generatedImageUrl state with the URL of the processed image
+        const response = await fetch('http://localhost:8000/api/response');
         const data = await response.json();
-        const imageUrl = `http://localhost:8000/uploads/${data.fileName}`;
-        setGeneratedImageUrl(imageUrl); // Use the new state variable here
+        setGeneratedImageUrl(data.response.imageUrls[0]);
 
         setLoading(false);
         setUploadingImg(false);
@@ -52,6 +46,8 @@ const BlendPost = () => {
       }
     }
   };
+
+
 
   const validateImage = (file, isMask = false) => {
     const maxSize = 4 * 1024 * 1024; // 4MB
@@ -93,7 +89,7 @@ const BlendPost = () => {
           Elevate your style with DALL-E & MidJourney's AI-powered virtual try-on for the perfect fit.
         </p>
       </div>
-      <form className='mt-16' onSubmit={handleSubmit}>
+      <form className='mt-16'>
         <div className='flex flex-col gap-5'>
           <div className='relative bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg w-64 p-3 h-64 flex justify-center items-center mx-auto'>
             {chosenImage ? (
@@ -117,8 +113,8 @@ const BlendPost = () => {
           </button>
         </div>
       </form>
-      <Products />
-      <TryOn />
+      <Products setSelectedProduct={setSelectedProduct} />
+      <TryOn imageUrl={generatedImageUrl} />
     </section>
   )
 };
