@@ -1,10 +1,13 @@
 const axios = require("axios");
 const { readFile, writeFile } = require("fs").promises;
-const fs = require("fs").promises;
-const { fileURLToPath, URL } = require("url");
 const { dirname, join } = require("path");
-const { stringify } = require("querystring");
 const cloudinary = require('cloudinary').v2;
+
+const denv = require("dotenv").config();
+if (denv.error) {
+    throw denv.error;
+}
+// console.log(denv.parsed);
 
 async function blendImages(urls) {
     try {
@@ -18,7 +21,7 @@ async function blendImages(urls) {
             method: 'post',
             url: 'https://api.thenextleg.io/v2/blend',
             headers: {
-                'Authorization': `Bearer <bearer-token>`,
+                'Authorization': `Bearer ${process.env.BEARER_TOKEN}`,
                 'Content-Type': 'application/json'
             },
             data: blendData
@@ -38,7 +41,7 @@ async function getMessage(messageId) {
             method: 'get',
             url: `https://api.thenextleg.io/v2/message/${messageId}?expireMins=2`,
             headers: {
-                'Authorization': `Bearer <bearer-token>`,
+                'Authorization': `Bearer ${process.env.BEARER_TOKEN}`,
             },
         };
 
@@ -109,18 +112,18 @@ async function readAndConvertImageFiles(userImage, productImage) {
 }
 
 cloudinary.config({
-    cloud_name: '<cloud-name>',
-    api_key: '<public-api-key>',
-    api_secret: '<private-api-key>',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Function to upload an image to Cloudinary
 async function uploadImageToCloudinary(imagePath) {
     try {
         const result = await cloudinary.uploader.upload(imagePath, {
-            folder: 'products', // Optional: Folder where the image will be stored in your Cloudinary account
+            folder: 'products', // Optional: Folder where the image will be stored in the Cloudinary account
             use_filename: true, // Use the original filename of the image
-            unique_filename: false, // Set to true if you want to ensure unique filenames
+            unique_filename: false, // Set to true if we want to ensure unique filenames
         });
 
         // Return the URL of the uploaded image
