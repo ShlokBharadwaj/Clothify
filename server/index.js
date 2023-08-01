@@ -4,6 +4,14 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
+const denv = require("dotenv").config();
+
+if (denv.error) {
+    throw denv.error;
+}
+
+// console.log(denv.parsed);
+
 let readAndConvertImageFiles = require('./routes/blend.js').readAndConvertImageFiles;
 
 const app = express();
