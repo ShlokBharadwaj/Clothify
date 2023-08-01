@@ -15,7 +15,7 @@ if (denv.error) {
 let readAndConvertImageFiles = require('./routes/blend.js').readAndConvertImageFiles;
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -48,11 +48,8 @@ app.get('/api/response', (req, res) => {
 });
 
 app.post("/upload", upload.single("image"), (req, res) => {
-
     //    console.log(req);
-
     const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
-
     // Respond with the image URL
     res.json({ imageUrl });
 });
