@@ -49,7 +49,8 @@ app.get('/api/response', (req, res) => {
 
 app.post("/upload", upload.single("image"), (req, res) => {
     //    console.log(req);
-    const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+    // const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+    const imageUrl = `${process.env.VERCEL_URL}/uploads/${req.file.filename}`;
     // Respond with the image URL
     res.json({ imageUrl });
 });
@@ -70,4 +71,5 @@ app.post('/api/process-images', upload.single('userImage'), async (req, res) => 
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on localhost:${PORT}`));
+// app.listen(PORT, () => console.log(`Server running on localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on Vercel URL: ${process.env.VERCEL_URL}`));
