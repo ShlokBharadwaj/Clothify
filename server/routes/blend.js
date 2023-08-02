@@ -3,10 +3,10 @@ const { readFile, writeFile } = require("fs").promises;
 const { dirname, join } = require("path");
 const cloudinary = require('cloudinary').v2;
 
-const denv = require("dotenv").config();
-if (denv.error) {
-    throw denv.error;
-}
+// const denv = require("dotenv").config();
+// if (denv.error) {
+//     throw denv.error;
+// }
 // console.log(denv.parsed);
 
 async function blendImages(urls) {

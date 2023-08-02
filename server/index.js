@@ -4,11 +4,11 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
-const denv = require("dotenv").config();
+// const denv = require("dotenv").config();
 
-if (denv.error) {
-    throw denv.error;
-}
+// if (denv.error) {
+//     throw denv.error;
+// }
 
 // console.log(denv.parsed);
 
