@@ -3,6 +3,7 @@ const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
+const WebSocket = require("websocket");
 
 const denv = require("dotenv").config();
 
@@ -31,6 +32,36 @@ const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: false }));
 app.use('/products', express.static(path.join(__dirname, 'products')));
 app.use(cors());
+
+// WebSocket server
+const httpServer = require('http').createServer(app);
+const wsServer = new WebSocket.server({ httpServer });
+
+// Store the connected WebSocket clients
+const clients = [];
+
+// Handle the WebSocket clients
+wsServer.on("request", (request) => {
+    const connection = request.accept(null, request.origin);
+
+    // Add the connection to the clients array
+    clients.push(connection);
+
+    // Remove the connection from the clients array when it is closed
+    connection.on("close", () => {
+        const index = clients.indexOf(connection);
+        if (index !== -1) {
+            clients.splice(index, 1);
+        }
+    });
+});
+
+// Broadcast message to all connected clients
+function broadcastMessage(message) {
+    clients.forEach((client) => {
+        client.sendUTF(JSON.stringify(message));
+    });
+}
 
 // routes
 app.get("/", (req, res) => {
@@ -64,6 +95,11 @@ app.post('/api/process-images', upload.single('userImage'), async (req, res) => 
         console.log('The user Image is: ' + userImage + ' And the Product image is: ' + productImage);
 
         res.json({ message: 'Image processing and response.json creation successful.' });
+
+        // After processing the images and creating response.json, send the updated data to all connected clients
+        const responseJsonPath = path.join(directoryPath, "response.json");
+        const responseJsonData = fs.readFileSync(responseJsonPath, 'utf8');
+        broadcastMessage(JSON.parse(responseJsonData));
     } catch (error) {
         console.error('Error processing images:', error);
         res.status(500).json({ error: 'Image processing failed.' });
