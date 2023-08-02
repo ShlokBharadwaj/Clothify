@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Loader, Card, FormField } from '../components';
+import Products from './Products';
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -27,29 +28,13 @@ const Home = () => {
         </p>
       </div>
 
-      <div className='mt-16'>
-        <FormField />
-      </div>
-
       <div className='mt-10'>
         {loading ? (
           <div className='flex justify-center items-center'>
             <Loader />
           </div>
         ) : (
-          <>
-            {searchProduct && (
-              <h2 className='font-medium text-[#6c757d] text-[16px] mb-3'>
-                Showing results for <span className='text-[#343a40]'>{searchProduct}</span>
-              </h2>
-            )}
-            <div className='grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3'>
-              {searchProduct ? (
-                <RenderCards data={[]} title="No search results found" />) : (
-                <RenderCards data={[]} title="No product found" />)
-              }
-            </div>
-          </>
+          <Products />
         )}
       </div>
     </section>
