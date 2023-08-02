@@ -42,7 +42,7 @@ const directoryPath = path.join(__dirname, 'routes');
 app.get('/api/response', (req, res) => {
     // Read the response.json file and send it as the response
     const responseJsonPath = path.join(directoryPath, "response.json");
-    console.log(responseJsonPath);
+    console.log("The response JSON file path is: " + responseJsonPath);
     const responseJsonData = fs.readFileSync(responseJsonPath, 'utf8');
     res.json(JSON.parse(responseJsonData));
 });
