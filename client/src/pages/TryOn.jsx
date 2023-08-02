@@ -9,7 +9,7 @@ const TryOn = () => {
 
   useEffect(() => {
     // Fetch the response.json data from the backend API
-    axios.get('http://localhost:8000/api/response')
+    axios.get('https://clothify-server.vercel.app/api/response')
       .then((response) => {
         // Update the state with the imageUrls data from response.json
         if (response.data && response.data.response && response.data.response.imageUrls) {

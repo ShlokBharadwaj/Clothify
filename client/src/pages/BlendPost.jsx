@@ -29,10 +29,10 @@ const BlendPost = () => {
         formData.append('productImage', selectedProduct.imageUrl);
 
         // Send the form data to the backend API
-        await axios.post('http://localhost:8000/api/process-images', formData);
+        await axios.post('https://clothify-server.vercel.app/api/process-images', formData);
 
         // After processing on the backend, set the generatedImageUrl state with the URL of the processed image
-        const response = await fetch('http://localhost:8000/api/response');
+        const response = await fetch('https://clothify-server.vercel.app/api/response');
         const data = await response.json();
         setGeneratedImageUrl(data.response.imageUrls[0]);
 
