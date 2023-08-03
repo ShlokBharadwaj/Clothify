@@ -44,6 +44,14 @@ app.get("/", (req, res) => {
 
 const directoryPath = path.join(__dirname, 'routes');
 
+fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+        console.error('Error reading directory:', err);
+    } else {
+        console.log('Files in the directory:', files);
+    }
+});
+
 app.get('/api/response', (req, res) => {
     // Read the response.json file and send it as the response
     const responseJsonPath = path.join(directoryPath, "response.json");
