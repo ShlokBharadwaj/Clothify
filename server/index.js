@@ -15,9 +15,7 @@ const fs = require("fs");
 let readAndConvertImageFiles = require('./routes/blend.js').readAndConvertImageFiles;
 
 const app = express();
-app.use(cors({
-    origin: ['https://clothify-client.vercel.app']
-}));
+app.use(cors());
 
 const PORT = process.env.PORT || 8000;
 
