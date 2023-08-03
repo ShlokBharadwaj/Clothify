@@ -15,6 +15,10 @@ const fs = require("fs");
 let readAndConvertImageFiles = require('./routes/blend.js').readAndConvertImageFiles;
 
 const app = express();
+app.use(cors({
+    origin: ['https://clothify-client.vercel.app']
+}));
+
 const PORT = process.env.PORT || 8000;
 
 const storage = multer.diskStorage({
@@ -30,7 +34,6 @@ const upload = multer({ storage: storage });
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/products', express.static(path.join(__dirname, 'products')));
-app.use(cors());
 
 // routes
 app.get("/", (req, res) => {
