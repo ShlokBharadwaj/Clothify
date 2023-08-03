@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
-import { logo,logoPV } from './assets';
+import { logo, logoPV } from './assets';
 import { Home, BlendPost } from './pages';
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
           <Route path='/blend-post' element={<BlendPost />} />
         </Routes>
       </main>
-    </Router> 
+    </Router>
   );
 };
 
