@@ -18,7 +18,7 @@ Before you begin, make sure you have the following software installed:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/ShlokBharadwaj/Clothify.git
+   git clone git@github.com:ShlokBharadwaj/Clothify.git
    ```
    
 2. Navigate to the server directory and install server dependencies:
@@ -44,15 +44,27 @@ Before you begin, make sure you have the following software installed:
     npm run dev
     ```
 
-### Usage
+## Usage
 
 1. Navigate to http://localhost:5173/ in your browser.
 2. Upload your photo and explore various clothing items virtually.
 
-### Contributing
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file:
+
+- `BEARER_TOKEN` - Your TNL (The Next Leg) API Token.
+- `MONGODB_URL` - Your MongoDB database URL.
+- `PORT` - Port number for your Node.js server.
+- `CLOUDINARY_CLOUD_NAME` - Your Cloudinary Cloud Name.
+- `CLOUDINARY_API_KEY` - Your Cloudinary Public API Key.
+- `CLOUDINARY_API_SECRET` - Your Cloudinary Private API Key.
+
+## Contributing
+
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-### License
+## License
 
 This project is licensed under the BSD 3-Clause License. See [LICENSE](LICENSE) for more information.
