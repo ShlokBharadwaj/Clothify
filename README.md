@@ -46,7 +46,7 @@ Before you begin, make sure you have the following software installed:
 
 ### Usage
 
-1. Navigate to http://localhost:3000/ in your browser.
+1. Navigate to http://localhost:5173/ in your browser.
 2. Upload your photo and explore various clothing items virtually.
 
 ### Contributing
