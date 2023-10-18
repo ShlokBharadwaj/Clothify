@@ -60,6 +60,9 @@ To run this project, you will need to add the following environment variables to
 - `CLOUDINARY_API_KEY` - Your Cloudinary Public API Key.
 - `CLOUDINARY_API_SECRET` - Your Cloudinary Private API Key.
 
+Before running the project, make sure to rename the provided `.env.sample` file to `.env` and fill in the necessary values for each variable.
+
+
 ## Contributing
 
 
