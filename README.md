@@ -13,6 +13,12 @@ Before you begin, make sure you have the following software installed:
 - Node.js: [Download and install Node.js](https://nodejs.org/)
 - MongoDB: [Install MongoDB](https://docs.mongodb.com/manual/installation/)
 
+### Setting up Cloudinary
+
+1. Visit the [Cloudinary website](https://cloudinary.com/) to sign up for an account.
+2. After signing up, you will receive your Cloudinary Cloud Name, Public API Key, and Private API Key.
+3. Populate the corresponding fields in the `.env` file with the credentials you received from Cloudinary.
+
 ### Installation
 
 1. Clone the repository:
